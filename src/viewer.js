@@ -26,6 +26,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { BasisTextureLoader } from 'three/examples/jsm/loaders/BasisTextureLoader.js';
 // import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 
 import { GUI } from 'dat.gui';
@@ -196,6 +197,12 @@ export class Viewer {
     return new Promise((resolve, reject) => {
 
       const manager = new LoadingManager();
+
+      // basis support
+      var basisLoader = new BasisTextureLoader();
+      basisLoader.setTranscoderPath('assets/basis/');
+      basisLoader.detectSupport(this.renderer);
+      manager.addHandler(/\.basis$/, basisLoader);
 
       // Intercept and override relative URLs.
       manager.setURLModifier((url, path) => {
